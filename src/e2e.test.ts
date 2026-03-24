@@ -13,16 +13,15 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
       prompt: [
         { role: "user", content: [{ type: "text", text: "Say hello in one word." }] },
       ],
-      maxTokens: 1000,
-      mode: { type: "regular" },
-      inputFormat: "prompt",
+      maxOutputTokens: 1000,
     })
 
-    expect(result.text).toBeDefined()
-    expect(result.text!.length).toBeGreaterThan(0)
+    const textContent = result.content.find((c) => c.type === "text")
+    expect(textContent).toBeDefined()
+    expect(textContent!.text.length).toBeGreaterThan(0)
     expect(result.finishReason).toBe("stop")
-    expect(result.usage.promptTokens).toBeGreaterThan(0)
-    expect(result.usage.completionTokens).toBeGreaterThan(0)
+    expect(result.usage.inputTokens).toBeGreaterThan(0)
+    expect(result.usage.outputTokens).toBeGreaterThan(0)
     expect(result.response?.id).toBeDefined()
     expect(result.response?.modelId).toBeDefined()
   }, 30_000)
@@ -32,9 +31,7 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
       prompt: [
         { role: "user", content: [{ type: "text", text: "Count from 1 to 3." }] },
       ],
-      maxTokens: 1000,
-      mode: { type: "regular" },
-      inputFormat: "prompt",
+      maxOutputTokens: 1000,
     })
 
     const parts: any[] = []
@@ -45,9 +42,16 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
       parts.push(value)
     }
 
+    const streamStart = parts.find((p) => p.type === "stream-start")
+    expect(streamStart).toBeDefined()
+
+    const metadata = parts.find((p) => p.type === "response-metadata")
+    expect(metadata).toBeDefined()
+    expect(metadata.id).toBeDefined()
+
     const textDeltas = parts
       .filter((p) => p.type === "text-delta")
-      .map((p) => p.textDelta)
+      .map((p) => p.delta)
     expect(textDeltas.length).toBeGreaterThan(0)
 
     const fullText = textDeltas.join("")
@@ -56,8 +60,8 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
     const finish = parts.find((p) => p.type === "finish")
     expect(finish).toBeDefined()
     expect(finish.finishReason).toBe("stop")
-    expect(finish.usage.promptTokens).toBeGreaterThan(0)
-    expect(finish.usage.completionTokens).toBeGreaterThan(0)
+    expect(finish.usage.inputTokens).toBeGreaterThan(0)
+    expect(finish.usage.outputTokens).toBeGreaterThan(0)
   }, 30_000)
 
   it("handles multi-turn conversations", async () => {
@@ -68,13 +72,12 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
         { role: "assistant", content: [{ type: "text", text: "2+2 equals 4." }] },
         { role: "user", content: [{ type: "text", text: "And 3+3?" }] },
       ],
-      maxTokens: 1000,
-      mode: { type: "regular" },
-      inputFormat: "prompt",
+      maxOutputTokens: 1000,
     })
 
-    expect(result.text).toBeDefined()
-    expect(result.text!.length).toBeGreaterThan(0)
+    const textContent = result.content.find((c) => c.type === "text")
+    expect(textContent).toBeDefined()
+    expect(textContent!.text.length).toBeGreaterThan(0)
   }, 30_000)
 
   it("doGenerate with reasoning_effort=instant", async () => {
@@ -86,12 +89,11 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
       prompt: [
         { role: "user", content: [{ type: "text", text: "What is 1+1?" }] },
       ],
-      maxTokens: 20,
-      mode: { type: "regular" },
-      inputFormat: "prompt",
+      maxOutputTokens: 20,
     })
 
-    expect(result.text).toBeDefined()
-    expect(result.text!.length).toBeGreaterThan(0)
+    const textContent = result.content.find((c) => c.type === "text")
+    expect(textContent).toBeDefined()
+    expect(textContent!.text.length).toBeGreaterThan(0)
   }, 30_000)
 })

@@ -1,6 +1,6 @@
 {
   "name": "inception-ai-provider",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Vercel AI SDK provider for the Inception API (Mercury 2)",
   "license": "MIT",
   "repository": {
@@ -50,9 +50,12 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
+  "peerDependencies": {
+    "ai": "^5.0.0"
+  },
   "dependencies": {
-    "@ai-sdk/provider": "^1.0.7",
-    "@ai-sdk/provider-utils": "^2.1.6"
+    "@ai-sdk/provider": "^2.0.0",
+    "@ai-sdk/provider-utils": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.1",

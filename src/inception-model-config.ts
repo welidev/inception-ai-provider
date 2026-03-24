@@ -5,4 +5,5 @@ export interface InceptionModelConfig {
   headers: () => Record<string, string | undefined>
   url: (options: { path: string }) => string
   fetch?: FetchFunction
+  generateId?: () => string
 }

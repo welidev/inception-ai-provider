@@ -1,4 +1,4 @@
-import type { LanguageModelV1, ProviderV1 } from "@ai-sdk/provider"
+import type { LanguageModelV2, ProviderV2 } from "@ai-sdk/provider"
 import type { FetchFunction } from "@ai-sdk/provider-utils"
 import type {
   InceptionChatModelId,
@@ -7,21 +7,21 @@ import type {
 import { loadApiKey, withoutTrailingSlash } from "@ai-sdk/provider-utils"
 import { InceptionChatLanguageModel } from "./inception-chat-language-model.js"
 
-export interface InceptionProvider extends ProviderV1 {
+export interface InceptionProvider extends ProviderV2 {
   (
     modelId: InceptionChatModelId,
     settings?: InceptionChatSettings,
-  ): LanguageModelV1
+  ): LanguageModelV2
 
   chatModel: (
     modelId: InceptionChatModelId,
     settings?: InceptionChatSettings,
-  ) => LanguageModelV1
+  ) => LanguageModelV2
 
   languageModel: (
     modelId: InceptionChatModelId,
     settings?: InceptionChatSettings,
-  ) => LanguageModelV1
+  ) => LanguageModelV2
 }
 
 export interface InceptionProviderSettings {
@@ -90,6 +90,9 @@ export function createInception(
   provider.languageModel = createChatModel
   provider.textEmbeddingModel = () => {
     throw new Error("Inception does not support embedding models.")
+  }
+  provider.imageModel = () => {
+    throw new Error("Inception does not support image models.")
   }
 
   return provider as InceptionProvider

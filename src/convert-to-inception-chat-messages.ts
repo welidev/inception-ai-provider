@@ -1,9 +1,9 @@
-import type { LanguageModelV1Prompt } from "@ai-sdk/provider"
+import type { LanguageModelV2Prompt } from "@ai-sdk/provider"
 import { UnsupportedFunctionalityError } from "@ai-sdk/provider"
 import type { InceptionChatPrompt } from "./inception-api-types.js"
 
 export function convertToInceptionChatMessages(
-  prompt: LanguageModelV1Prompt,
+  prompt: LanguageModelV2Prompt,
 ): InceptionChatPrompt {
   const messages: InceptionChatPrompt = []
 
@@ -19,9 +19,9 @@ export function convertToInceptionChatMessages(
             switch (part.type) {
               case "text":
                 return part.text
-              case "image":
+              case "file":
                 throw new UnsupportedFunctionalityError({
-                  functionality: "Image content parts in user messages",
+                  functionality: "File content parts in user messages",
                 })
               default:
                 throw new UnsupportedFunctionalityError({

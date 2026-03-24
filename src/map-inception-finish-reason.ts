@@ -1,13 +1,15 @@
-import type { LanguageModelV1FinishReason } from "@ai-sdk/provider"
+import type { LanguageModelV2FinishReason } from "@ai-sdk/provider"
 
 export function mapInceptionFinishReason(
   finishReason: string | null | undefined,
-): LanguageModelV1FinishReason {
+): LanguageModelV2FinishReason {
   switch (finishReason) {
     case "stop":
       return "stop"
     case "length":
       return "length"
+    case "content_filter":
+      return "content-filter"
     default:
       return "unknown"
   }

@@ -1,4 +1,4 @@
-import type { LanguageModelV1CallWarning } from "@ai-sdk/provider"
+import type { LanguageModelV2CallWarning } from "@ai-sdk/provider"
 
 export function collectUnsupportedWarnings({
   topK,
@@ -6,12 +6,12 @@ export function collectUnsupportedWarnings({
   presencePenalty,
   responseFormat,
 }: {
-  topK?: number | null
-  frequencyPenalty?: number | null
-  presencePenalty?: number | null
-  responseFormat?: { type: string } | null
-}): LanguageModelV1CallWarning[] {
-  const warnings: LanguageModelV1CallWarning[] = []
+  topK?: number
+  frequencyPenalty?: number
+  presencePenalty?: number
+  responseFormat?: { type: string }
+}): LanguageModelV2CallWarning[] {
+  const warnings: LanguageModelV2CallWarning[] = []
 
   if (topK != null) {
     warnings.push({ type: "unsupported-setting", setting: "topK" })
