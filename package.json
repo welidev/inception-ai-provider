@@ -1,6 +1,6 @@
 {
   "name": "inception-ai-provider",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Vercel AI SDK provider for the Inception API (Mercury 2)",
   "license": "MIT",
   "repository": {
