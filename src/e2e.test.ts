@@ -19,9 +19,9 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
     const textContent = result.content.find((c) => c.type === "text")
     expect(textContent).toBeDefined()
     expect(textContent!.text.length).toBeGreaterThan(0)
-    expect(result.finishReason).toBe("stop")
-    expect(result.usage.inputTokens).toBeGreaterThan(0)
-    expect(result.usage.outputTokens).toBeGreaterThan(0)
+    expect(result.finishReason.unified).toBe("stop")
+    expect(result.usage.inputTokens.total).toBeGreaterThan(0)
+    expect(result.usage.outputTokens.total).toBeGreaterThan(0)
     expect(result.response?.id).toBeDefined()
     expect(result.response?.modelId).toBeDefined()
   }, 30_000)
@@ -59,9 +59,9 @@ describe.skipIf(!hasApiKey)("E2E: chat model", () => {
 
     const finish = parts.find((p) => p.type === "finish")
     expect(finish).toBeDefined()
-    expect(finish.finishReason).toBe("stop")
-    expect(finish.usage.inputTokens).toBeGreaterThan(0)
-    expect(finish.usage.outputTokens).toBeGreaterThan(0)
+    expect(finish.finishReason.unified).toBe("stop")
+    expect(finish.usage.inputTokens.total).toBeGreaterThan(0)
+    expect(finish.usage.outputTokens.total).toBeGreaterThan(0)
   }, 30_000)
 
   it("handles multi-turn conversations", async () => {
